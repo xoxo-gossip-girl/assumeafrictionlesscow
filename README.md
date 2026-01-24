@@ -1,1 +1,3 @@
-# assumeafrictionlesscow
+# Assume a Frictionless Cow
+### A cute blog by Yue, Lynn, Angie and Silvia!
+Hope you enjoy...
