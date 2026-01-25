@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+
+    .go-btn {
+        display: inline-block;
+        border: 3px solid #39ff14;
+        padding: 12px 35px;
+        color: #111;
+        text-decoration: none;
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 14px;
+        transition: all 0.3s ease; /* Smooth transition */
+    }
+
+    .go-btn:hover {
+        background: #39ff14;
+        color: #000;
+        box-shadow: 0 0 20px #39ff14, 0 0 40px #39ff14; /* Neon glow effect */
+        transform: translateY(-2px);
+    }
+
+    #solar-system {
+        position: relative;
+        width: 100%;
+        height: 800px; /* Increased height */
+        background: #020205;
+        border-radius: 30px;
+        overflow: hidden;
+        border: 1px solid #1a1a2e;
+    }
+
+    #blog-graph { width: 100%; height: 100%; }
+
+    /* THE ZOOM COMPONENT */
+    #zoom-card {
+        position: absolute;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 420px; /* Bigger proportion */
+        height: 420px;
+        background: #ffffff;
+        border: 8px solid #39ff14;
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+        opacity: 0;
+        z-index: 100;
+        text-align: center;
+        padding: 40px;
+        box-shadow: 0 0 80px rgba(57, 255, 20, 0.6);
+    }
+
+    #zoom-card.active {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    #zoom-card img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #f0f0f0; margin-bottom: 10px; }
+    #zoom-card h2 { font-family: 'Inter', sans-serif; font-weight: 900; margin: 10px 0; color: #111; font-size: 28px; }
+    #zoom-card p { font-family: 'Georgia', serif; font-style: italic; color: #444; margin-bottom: 25px; font-size: 16px; }
+
+</style>
+
+<div id="solar-system">
+    <div id="blog-graph"></div>
+    <div id="zoom-card">
+        <img id="z-img" src="" alt="">
+        <h2 id="z-title">TITLE</h2>
+        <p id="z-intro">Intro text...</p>
+        <a id="z-link" href="#" class="go-btn">Go to page -></a>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+<script>
+    const COLORS = {
+        sun: '{{ hub_color }}', // Dynamic color from Python
+        planet: '#00f2ff',
+        line: '#6a0dad',        // Base Purple
+        hoverLine: '#300154',   // Deep Purple
+        glow: '#39ff14'
+    };
+
+    // 1. Setup the Nodes starting with the Hub
+    const rawNodes = [
+        {
+            id: 0,
+            label: '{{ hub_title }}',
+            size: 90,
+            color: COLORS.sun,
+            font: { size: 18, weight: 'bold', color: '#fff' },
+            isHub: true
+        }
+    ];
+    const rawEdges = [];
+
+    // 2. Loop through the posts provided by the route
+    {% for post in posts %}
+    rawNodes.push({
+        id: {{ loop.index }}, // Auto-increment IDs
+        label: '{{ post.label }}',
+        img: '{{ post.img }}',
+        intro: '{{ post.intro }}',
+        url: '{{ post.url }}'
+    });
+
+    rawEdges.push({ from: 0, to: {{ loop.index }} });
+    {% endfor %}
+
+    const nodes = new vis.DataSet(rawNodes);
+    const edges = new vis.DataSet(rawEdges);
+
+    const container = document.getElementById('blog-graph');
+    const card = document.getElementById('zoom-card');
+
+    const options = {
+        nodes: {
+            shape: 'circle',
+            size: 55,
+            color: { background: '#0a0a1a', border: COLORS.planet },
+            font: { color: COLORS.planet, face: 'monospace', size: 16, strokeWidth: 0 },
+            borderWidth: 3,
+            shadow: { enabled: true, color: COLORS.planet, size: 12 }
+        },
+        edges: {
+                width: 5,
+                color: { color: COLORS.line }, // Set default to purple
+                smooth: { type: 'curvedCW', roundness: 0.4 }
+            },
+        physics: {
+            solver: 'forceAtlas2Based',
+            forceAtlas2Based: {
+                gravitationalConstant: -200,
+                springLength: 220, /* Longer strings to fill the bigger container */
+                springConstant: 0.03,
+                damping: 0.3
+            }
+        },
+        interaction: { hover: true }
+    };
+
+    const network = new vis.Network(container, {nodes, edges}, options);
+
+        // 1. Fit the graph when it first loads/stabilizes
+    network.once("stabilizationFinished", function() {
+        network.fit({
+            animation: { duration: 1000, easingFunction: "easeInOutQuad" }
+        });
+    });
+
+    // 2. Keep it adjusted as nodes sway or move
+    network.on("afterDrawing", function() {
+        // We use a gentle fit here to prevent "jittery" camera movement
+        // 'nodes' refers to all nodes being visible
+        network.fit({
+            nodes: nodes.getIds(),
+            animation: false // Set to false for smooth real-time tracking
+        });
+    });
+
+    // SWAY ANIMATION
+    let startTime = Date.now();
+    function animateSway() {
+        let elapsed = (Date.now() - startTime) / 1000;
+        network.moveNode(0, Math.sin(elapsed * 0.5) * 20, Math.cos(elapsed * 0.8) * 15);
+        requestAnimationFrame(animateSway);
+    }
+    network.once("stabilizationFinished", animateSway);
+
+    // IMPROVED HOVER
+    network.on("hoverNode", function (params) {
+        const nodeId = params.node;
+        const nodeData = nodes.get(nodeId);
+
+        if (nodeData.isHub) {
+            nodes.update({ id: 0, size: 110, shadow: { size: 30, color: COLORS.sun } });
+            return;
+        }
+
+        // 1. Inflate Planet significantly and change border to Neon Green
+        nodes.update({
+            id: nodeId,
+            size: 80,
+            color: { border: COLORS.glow },
+            shadow: { color: COLORS.glow, size: 25 }
+        });
+
+        // 2. Glow Line
+        const edgeId = network.getConnectedEdges(nodeId)[0];
+        edges.update({ id: edgeId, color: COLORS.hoverLine, width: 10 }); // Deeper purple on hover
+
+        // 3. Zoom Card Position
+        const domPos = network.canvasToDOM(network.getPositions([nodeId])[nodeId]);
+        card.style.left = domPos.x + "px";
+        card.style.top = domPos.y + "px";
+
+        document.getElementById('z-img').src = nodeData.img;
+        document.getElementById('z-title').innerText = nodeData.label.toUpperCase();
+        document.getElementById('z-intro').innerText = nodeData.intro;
+        document.getElementById('z-link').href = nodeData.url;
+
+        card.classList.add('active');
+    });
+
+    network.on("blurNode", function (params) {
+        const nodeId = params.node;
+
+        if (nodeId === 0) {
+            nodes.update({ id: 0, size: 90, shadow: { size: 12, color: COLORS.planet } });
+            return;
+        }
+
+        // Reset Node
+        nodes.update({
+            id: nodeId,
+            size: 55,
+            color: { border: COLORS.planet },
+            shadow: { color: COLORS.planet, size: 12 }
+        });
+
+        // Reset Line
+        const edgeId = network.getConnectedEdges(nodeId)[0];
+        edges.update({ id: edgeId, color: COLORS.line, width: 5 }); // Back to standard purple
+
+        card.classList.remove('active');
+    });
+</script>
+{% endblock %}
