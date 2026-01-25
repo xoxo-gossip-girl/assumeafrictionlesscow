@@ -1,0 +1,39 @@
+.cow-header {
+    background-color: #fdf6e3;
+    border-bottom: 2px solid #eee8d5;
+}
+
+
+.custom-nav-links .nav-link {
+    color: #b58900;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    padding: 0 15px;
+}
+
+.custom-nav-links .nav-link:hover {
+    color: #cb4b16;
+    text-decoration: underline;
+}
+
+
+.brand-box {
+    border-top: 2px solid #93a1a1;
+    border-bottom: 2px solid #93a1a1;
+    padding: 20px 40px;
+    position: relative;
+}
+
+.brand-box h1 {
+    font-family: 'serif';
+    color: #586e75;
+    margin: 0;
+}
+
+
+.header-illustration {
+    font-size: 3rem;
+    filter: sepia(0.5);
+    opacity: 0.7;
+}
