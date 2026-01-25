@@ -19,6 +19,26 @@ def index():
 def sitemaps():
     return render_template('sitemaps.xml')
 
+@app.route('/maths')
+def sitemaps():
+    return render_template('maths.html')
+
+@app.route('/physics')
+def sitemaps():
+    return render_template('physics.html')
+
+@app.route('/about')
+def sitemaps():
+    return render_template('about.html')
+
+@app.route('/memes')
+def sitemaps():
+    return render_template('memes.html')
+
+@app.route('/olympiad')
+def sitemaps():
+    return render_template('olympiad.html')
+
 # This bit is for the contact page if they want to contact us...
 # @app.route('/contact', methods=['GET', 'POST'])
 # def contact():
