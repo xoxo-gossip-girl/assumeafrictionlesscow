@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<article style="max-width: 800px; margin: 0 auto; padding: 40px 20px; font-family: 'Inter', sans-serif; color: #eee;">
+    <div class="post-body markdown-body">
+        {{ content | safe }}
+    </div>
+</article>
+{% endblock %}

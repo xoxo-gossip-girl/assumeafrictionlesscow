@@ -1,4 +1,101 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends "base.html" %}
 
+{% block content %}
+<style>
+    /* Technical Blueprint Background Effect */
+    .math-bg {
+        background-color: #0d0d0d;
+        background-image:
+            linear-gradient(rgba(255, 215, 0, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 215, 0, 0.05) 1px, transparent 1px);
+        background-size: 30px 30px; /* Looks like graph paper */
+        min-height: 100vh;
+        color: #e0e0e0;
+    }
+
+    .blueprint-cow {
+        border: 2px dashed #bf953f;
+        padding: 40px;
+        position: relative;
+    }
+
+    /* Elegant Serif font for that "Journal" feel */
+    .serif-title {
+        font-family: 'Playfair Display', serif;
+        letter-spacing: -1px;
+    }
+
+    .form-input-minimal {
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 2px solid #bf953f !important;
+        color: white !important;
+        padding-left: 0 !important;
+        transition: border-color 0.4s;
+    }
+
+    .form-input-minimal:focus {
+        border-bottom-color: #FFD700 !important;
+        box-shadow: none !important;
+    }
+
+    .form-input-minimal::placeholder {
+        color: rgba(255, 255, 255, 0.4) !important;
+        font-style: italic;
+    }
+</style>
+
+<div class="math-bg d-flex align-items-center">
+    <div class="container py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="blueprint-cow">
+                    <h1 class="display-3 fw-bold text-white serif-title">$\mu = 0$</h1>
+                    <p class="text-warning text-uppercase ls-2 fw-bold">Project: Frictionless Herd</p>
+                    <p class="text-secondary lead">
+                        "The cow is a perfect sphere. The vacuum is absolute. The physics are udderly divine."
+                    </p>
+                    <div class="mt-4 opacity-50">
+                        <small class="d-block text-white-50"># Define Herd(x):</small>
+                        <small class="d-block text-white-50">Return update if curiosity > threshold</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 offset-lg-1">
+                <div class="p-4 p-md-0">
+                    <h2 class="serif-title text-white mb-2">Never Miss a Moo.</h2>
+                    <p class="text-secondary mb-5">Join our mailing list for regular updates on all things maths and physics related!</p>
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="mb-4 text-{{ category }} fw-bold">/// {{ message }}</div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+
+                    <form action="{{ url_for('subscribe') }}" method="POST">
+                        <div class="mb-5">
+                            <label class="small text-uppercase text-warning fw-bold mb-2">Email Address</label>
+                            <input type="email" name="email" class="form-control form-input-minimal rounded-0"
+                                   placeholder="galileo@galilei.edu" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-outline-warning rounded-0 px-5 py-3 text-uppercase fw-bold ls-2">
+                            Join the Herd.
+                        </button>
+                    </form>
+
+                    <div class="mt-5">
+                        <a href="{{ url_for('index') }}" class="text-white-50 text-decoration-none small">
+                            <span class="text-warning">←</span> Return to home
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 {% endblock %}

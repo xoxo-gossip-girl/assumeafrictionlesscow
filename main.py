@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, abort, url_for
 import smtplib
 from email.message import EmailMessage
 from graphdata import graph_data
+from olympiadproblems import olympiad_problems
 import os
+import markdown
+from memes import memes
 
 app = Flask(__name__)
 
@@ -32,8 +35,35 @@ def show_graph(category):
     return render_template('graph_page.html', hub_title=data['title'], hub_color=data['color'], posts=data['posts'])
 
 
-@app.route('/subscribe')
+@app.route('/subscribe', methods=['GET', 'POST'])
 def subscribe():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        if email:
+            # Save to file
+            with open("subscribers.txt", "a") as file:
+                file.write(f"{email}\n")
+
+            # Send your notification email
+            try:
+                msg = EmailMessage()
+                msg['Subject'] = 'New Herd Member Joined!'
+                msg['From'] = EMAIL_ADDRESS
+                msg['To'] = EMAIL_ADDRESS
+                msg.set_content(f"Good news! {email} has joined the frictionless herd.")
+
+                with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+                    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+                    smtp.send_message(msg)
+
+                flash("You've joined the herd! 🐮", "success")
+            except Exception as e:
+                flash("The cow tripped! Try again later.", "danger")
+
+            # Stay on the page so they see the success message
+            return redirect(url_for('subscribe'))
+
+    # If it's a GET request, just show the page
     return render_template('subscribe.html')
 
 
@@ -43,37 +73,48 @@ def about():
 
 
 @app.route('/memes')
-def memes():
-    return render_template('memes.html')
+def meme():
+    return render_template('memes.html', memes=memes)
 
 
 @app.route('/olympiad')
 def olympiad():
-    return render_template('olympiad.html')
+    return render_template('olympiad.html', problems=olympiad_problems)
 
 
-# This bit is for the contact page if they want to contact us...
-# @app.route('/contact', methods=['GET', 'POST'])
-# def contact():
-#     if request.method == 'POST':
-#         name = request.form['name']
-#         email = request.form['email']
-#         message = request.form['message']
-#
-#         msg = EmailMessage()
-#         msg['Subject'] = 'New Contact Form Submission'
-#         msg['From'] = EMAIL_ADDRESS
-#         msg['To'] = EMAIL_ADDRESS
-#         msg.set_content(f"Name: {name}\nEmail: {email}\nMessage: {message}")
-#
-#         try:
-#             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-#                 smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-#                 smtp.send_message(msg)
-#             flash("Message sent successfully!", "success")
-#         except Exception as e:
-#             flash("Failed to send message.", "danger")
-#     return render_template('contact.html')
+@app.route('/<path:post_slug>')
+def individual_post(post_slug):
+    # 1. Find the metadata in your graph_data
+    target_url = f"/{post_slug}"
+    post_metadata = None
+    color = "#333"
+
+    for cat in graph_data.values():
+        for p in cat['posts']:
+            if p['url'] == target_url:
+                post_metadata = p
+                color = cat['color']
+                break
+
+    if not post_metadata:
+        abort(404)
+
+    # 2. Look for the corresponding Markdown file
+    file_path = os.path.join('posts', f"{post_slug}.md")
+
+    if os.path.exists(file_path):
+        with open(file_path, 'r', encoding='utf-8') as f:
+            text = f.read()
+            # Convert Markdown to HTML
+            html_content = markdown.markdown(text, extensions=['extra', 'codehilite'])
+    else:
+        html_content = "<p>Content coming soon...</p>"
+
+    return render_template('post_page.html',
+                           post=post_metadata,
+                           content=html_content,
+                           color=color)
+
 
 
 if __name__ == '__main__':

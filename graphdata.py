@@ -3,7 +3,7 @@ graph_data = {
         'title': 'Number Theory',
         'color': '#3d1a10',  # Deep Red/Brown (Algebra-esque)
         'posts': [
-            {'id': 1, 'label': 'Primes', 'img': '/static/primes.jpg', 'intro': 'The building blocks of arithmetic.', 'url': '/primes'},
+            {'id': 1, 'label': 'Primes', 'img': '/static/primes.jpg', 'intro': 'The building blocks of arithmetic.', 'url': '/can-physics-predict-the-future'},
             {'id': 2, 'label': 'Modular', 'img': '/static/mod.jpg', 'intro': 'Clock arithmetic and congruences.', 'url': '/modular'},
             {'id': 3, 'label': 'Riemann', 'img': '/static/zeta.jpg', 'intro': 'The most famous unsolved hypothesis.', 'url': '/riemann'}
         ]

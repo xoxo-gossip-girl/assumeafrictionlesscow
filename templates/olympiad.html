@@ -1,4 +1,106 @@
 {% extends 'base.html' %}
 {% block content %}
+<section class="olympiad-intro">
+    <h2>The Pasture of Problems</h2>
+    <p>Below is a collection of some of my favourite problems from a variety of national and international math olympiads (as well as a couple of informatics problems thrown in!), along with detailed solutions. Each problem is graded by its "Frictionless Factor" (difficulty):</p>
 
+    <div class="difficulty-legend">
+        <div class="legend-item">
+            <span class="cow-rank">🐄</span>
+            <div class="legend-text">
+                <strong>Entry Level:</strong> Standard techniques (e.g., basic Modular Arithmetic or Power of a Point). Great for warming up the brain.
+            </div>
+        </div>
+        <div class="legend-item">
+            <span class="cow-rank">🐄🐄</span>
+            <div class="legend-text">
+                <strong>Intermediate:</strong> Requires a "clever jump." You might need to combine two different fields, like using Graph Theory for a Combi problem.
+            </div>
+        </div>
+        <div class="legend-item">
+            <span class="cow-rank">🐄🐄🐄</span>
+            <div class="legend-text">
+                <strong>Olympiad Tier:</strong> Problems that would make a Laplace's Demon sweat. Expect deep lemmas, $p$-adics, or complex functional equations.
+            </div>
+        </div>
+    </div>
+</section>
+<div class="matrix-controls">
+    <input type="text" id="matrixSearch" placeholder="Search problems..." onkeyup="filterMatrix()">
+
+    <select id="topicFilter" onchange="filterMatrix()">
+        <option value="all">All Topics</option>
+        <option value="number-theory">Number Theory</option>
+        <option value="algebra">Algebra</option>
+        <option value="geometry">Geometry</option>
+        <option value="informatics">Informatics</option>
+    </select>
+
+    <div class="slider-group">
+        <label for="difficultyFilter">Max Difficulty: <span id="difficultyVal">3</span> 🐄</label>
+        <input type="range" id="difficultyFilter" min="1" max="3" value="3" oninput="filterMatrix()">
+    </div>
+</div>
+<div class="matrix-container">
+    <table class="problem-matrix">
+        <thead>
+            <tr>
+                <th>Problem</th>
+                <th>Topic</th>
+                <th>Difficulty</th>
+                <th>Key Idea</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for key, prob in problems.items() %}
+        <tr class="matrix-row"
+            data-topic="{{ prob.topic.lower().replace(' ', '-') }}"
+            data-difficulty="{{ prob.difficulty }}"
+            onclick="window.location='/{{ prob.url_slug }}'">
+
+            <td class="prob-title">{{ prob.title }}</td>
+
+            <td>
+                <span class="tag tag-{{ prob.topic.lower().replace(' ', '-') }}">
+                    {{ prob.topic }}
+                </span>
+            </td>
+
+            <td>
+                {% for i in range(prob.difficulty) %}🐄{% endfor %}
+            </td>
+
+            <td class="tool-text">{{ prob.tool }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+<script>
+function filterMatrix() {
+    const searchQuery = document.getElementById('matrixSearch').value.toLowerCase();
+    const topicFilter = document.getElementById('topicFilter').value;
+    const maxDifficulty = document.getElementById('difficultyFilter').value;
+    const rows = document.querySelectorAll('.matrix-row');
+
+    // Update the label text
+    document.getElementById('difficultyVal').innerText = maxDifficulty;
+
+    rows.forEach(row => {
+        const title = row.querySelector('.prob-title').innerText.toLowerCase();
+        const topic = row.getAttribute('data-topic');
+        const difficulty = parseInt(row.getAttribute('data-difficulty'));
+
+        const matchesSearch = title.includes(searchQuery);
+        const matchesTopic = (topicFilter === 'all' || topic === topicFilter);
+        const matchesDifficulty = (difficulty <= maxDifficulty);
+
+        if (matchesSearch && matchesTopic && matchesDifficulty) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+}
+</script>
 {% endblock %}

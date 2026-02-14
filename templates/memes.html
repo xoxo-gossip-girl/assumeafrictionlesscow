@@ -1,4 +1,43 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
+  /* The only CSS you need for the custom 2px gap and columns */
+  .meme-grid {
+    column-count: 4; /* Number of columns on desktop */
+    column-gap: 2px; /* Your requested 2px gap */
+  }
+  .meme-grid img {
+    display: block;
+    width: 100%;
+    margin-bottom: 2px; /* Vertical gap */
+    cursor: pointer;
+    border: 1px solid #333; /* Simple straight border */
+  }
+  /* Responsive: 2 columns on mobile */
+  @media (max-width: 600px) {
+    .meme-grid { column-count: 2; }
+  }
+</style>
 
+<div class="container-fluid p-1">
+  <div class="meme-grid">
+    {% for meme in memes %}
+      <img src="{{ url_for('static', filename='memes/' + meme.file) }}"
+           alt="{{ meme.title }}"
+           data-bs-toggle="modal"
+           data-bs-target="#memeModal"
+           onclick="document.getElementById('modalImage').src=this.src">
+    {% endfor %}
+  </div>
+</div>
+
+<div class="modal fade" id="memeModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-dark">
+      <div class="modal-body p-0 text-center">
+        <img src="" id="modalImage" style="max-width: 100%; height: auto;">
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
