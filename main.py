@@ -43,7 +43,6 @@ def subscribe():
             # Add to Firebase
             db.collection('subscribers').add({
                 'email': email,
-                'timestamp': firestore.SERVER_TIMESTAMP
             })
             success = True
             # We stay on the page to show the "User added!" message
