@@ -1,17 +1,16 @@
-from flask import Flask, render_template, request, redirect, flash, abort, url_for
-import smtplib
-from email.message import EmailMessage
+from flask import Flask, render_template, request, redirect, abort, url_for
 from graphdata import graph_data
 from olympiadproblems import olympiad_problems
 import os
 import markdown
+import firebase_admin
+from firebase_admin import firestore, credentials
 from memes import memes
 
 app = Flask(__name__)
-
-EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
-EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
-app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
+cred = credentials.Certificate("serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 
 @app.route('/')
@@ -37,34 +36,20 @@ def show_graph(category):
 
 @app.route('/subscribe', methods=['GET', 'POST'])
 def subscribe():
+    success = False
     if request.method == 'POST':
         email = request.form.get('email')
         if email:
-            # Save to file
-            with open("subscribers.txt", "a") as file:
-                file.write(f"{email}\n")
+            # Add to Firebase
+            db.collection('subscribers').add({
+                'email': email,
+                'timestamp': firestore.SERVER_TIMESTAMP
+            })
+            success = True
+            # We stay on the page to show the "User added!" message
+            return render_template('subscribe.html', success=success)
 
-            # Send your notification email
-            try:
-                msg = EmailMessage()
-                msg['Subject'] = 'New Herd Member Joined!'
-                msg['From'] = EMAIL_ADDRESS
-                msg['To'] = EMAIL_ADDRESS
-                msg.set_content(f"Good news! {email} has joined the frictionless herd.")
-
-                with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-                    smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-                    smtp.send_message(msg)
-
-                flash("You've joined the herd! 🐮", "success")
-            except Exception as e:
-                flash("The cow tripped! Try again later.", "danger")
-
-            # Stay on the page so they see the success message
-            return redirect(url_for('subscribe'))
-
-    # If it's a GET request, just show the page
-    return render_template('subscribe.html')
+    return render_template('subscribe.html', success=success)
 
 
 @app.route('/about')
