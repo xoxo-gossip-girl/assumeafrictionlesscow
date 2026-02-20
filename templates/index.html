@@ -104,17 +104,66 @@
 </head>
 <body>
 
-    <main class="hero-container">
-        <div class="hero-text">
-            <h2>Physics, simplified.</h2>
-            <p>Welcome to the laboratory. We ignore air resistance, friction, and reality just enough to make the math work out beautifully. Dive into our latest deep-dives and Olympiad prep materials.</p>
-            <a href="categories.html" class="cta-box">Explore Categories</a>
+<section class="hero-lab">
+    <div class="hero-content">
+        <h1>welcome ye young calflings</h1>
+        <img src="{{ url_for('static', filename='img/logo.png') }}" class="hero-logo">
+
+        <div class="hero-description">
+            <p>after an especially interesting physics soc presentation given by one of the herd which unfortunately had a low turn out despite how cool it was, the herd rub their heads together and decided to create a platform to showcase their cool finds to others.</p>
+            <p>and thus, <strong>assume a frictionless cow</strong> was born. our official attempt to keep $\mu = 0$ whilst navigating maths and physics.</p>
         </div>
 
-        <div class="featured-image">
-            <span style="font-size: 5rem;">🐄</span>
+        <a href="{{ url_for('posts') }}" class="discover-btn">discover our posts</a>
+    </div>
+
+    <div class="experiment-zone">
+        <div class="pasture-stage">
+            <div id="cow" class="frictionless-cow">🐄</div>
+            <div class="gold-fence"></div>
         </div>
-    </main>
+
+        <div class="physics-controls">
+            <div class="control-item">
+                <label>Velocity ($v$)</label>
+                <input type="range" id="speedSlider" min="1" max="10" value="5">
+                <span id="speedValue">5m/s</span>
+            </div>
+            <div class="control-item">
+                <label>Subject ($m$)</label>
+                <select id="animalSelector">
+                    <option value="🐄">Cow</option>
+                    <option value="🐔">Chicken</option>
+                    <option value="🐖">Pig</option>
+                    <option value="🐎">Horse</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
 
 </body>
+
+<script>
+// Ensure these IDs match the HTML exactly
+const slider = document.getElementById('speedSlider');
+const speedValue = document.getElementById('speedValue');
+const cowElement = document.getElementById('cow');
+const animalSelector = document.getElementById('animalSelector');
+
+// Handle Speed Changes
+slider.addEventListener('input', function() {
+    const val = this.value;
+    speedValue.textContent = val + "m/s";
+
+    // Calculate duration: 11-1 = 10s (Slow), 11-10 = 1s (Fast)
+    const duration = (11 - val) + "s";
+    cowElement.style.setProperty('--speed', duration);
+});
+
+// Handle Animal Swaps
+animalSelector.addEventListener('change', function() {
+    cowElement.textContent = this.value;
+});
+</script>
 {% endblock %}

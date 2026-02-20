@@ -4,13 +4,15 @@ from olympiadproblems import olympiad_problems
 import os
 import markdown
 import firebase_admin
-from firebase_admin import firestore, credentials
+from firebase_admin import firestore
 from memes import memes
 
 app = Flask(__name__)
-cred = credentials.Certificate("serviceAccountKey.json")
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+
+# if not firebase_admin._apps:
+#     firebase_admin.initialize_app()
+#
+# db = firestore.client()
 
 
 @app.route('/')
@@ -39,14 +41,14 @@ def subscribe():
     success = False
     if request.method == 'POST':
         email = request.form.get('email')
-        if email:
-            # Add to Firebase
-            db.collection('subscribers').add({
-                'email': email,
-            })
-            success = True
-            # We stay on the page to show the "User added!" message
-            return render_template('subscribe.html', success=success)
+        # if email:
+        #     # Add to Firebase
+        #     db.collection('subscribers').add({
+        #         'email': email,
+        #     })
+        #     success = True
+        #     # We stay on the page to show the "User added!" message
+        #     return render_template('subscribe.html', success=success)
 
     return render_template('subscribe.html', success=success)
 
@@ -72,6 +74,11 @@ def individual_post(post_slug):
     target_url = f"/{post_slug}"
     post_metadata = None
     color = "#333"
+
+    for p in olympiad_problems.values():
+        if p['url_slug'] == f"{post_slug}":
+            post_metadata = p
+            break
 
     for cat in graph_data.values():
         for p in cat['posts']:

@@ -244,3 +244,265 @@
     text-decoration: none;
     color: inherit;
 }
+
+.about{
+    max-width: 100%;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+.about-section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:50px;
+    margin: 0 auto 30px auto;
+    max-width: 1600px;
+}
+.about-text h2{
+    color: #d4af37; /* Gold highlight */
+    font-size: 2rem;
+    margin: 0 auto 15px auto;
+    text-align: left;
+    max-width: 600px;
+}
+
+.about-text h3{
+    color: #ccc;
+    font-size: 24px;
+    text-align: left;
+}
+
+.about-text p{
+    color: #ccc;
+    line-height: 1.6;
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.about-image img{
+    width: 100%;
+    max-width: 1200px;
+    height: auto;
+    object-fit: contain;
+}
+
+.about-section .about-image img {
+    max-width: 300px;
+}
+
+.about-image-full {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 100px;
+}
+
+.about-image-full img {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    object-fit: contain;
+}
+
+.pasture-stage {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background: transparent;
+    overflow: hidden;
+    border-bottom: 1px solid #d4af37; /* Matches your gold line */
+    margin-bottom: 20px;
+}
+
+.frictionless-cow {
+    font-size: 45px;
+    position: absolute;
+    bottom: 5px;
+    left: -100px;
+    transform: scaleX(-1); /* Keep it facing right */
+    /* Use the variable for JS control, fallback to 6s */
+    animation: frictionless-loop var(--speed, 6s) linear infinite;
+}
+
+@keyframes frictionless-loop {
+    0%   { left: -100px; bottom: 5px;  transform: scaleX(-1) rotate(0deg); }
+    42%  { left: 42%;   bottom: 5px;  transform: scaleX(-1) rotate(0deg); }
+    50%  { left: 50%;   bottom: 110px; transform: scaleX(-1) rotate(-30deg); } /* The Jump */
+    58%  { left: 58%;   bottom: 5px;  transform: scaleX(-1) rotate(0deg); }
+    100% { left: 110%;  bottom: 5px;  transform: scaleX(-1) rotate(0deg); }
+}
+
+.gold-fence {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    height: 45px;
+    background: #D4AF37;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    z-index: 1;
+}
+
+/* Container for the controls */
+.physics-controls {
+    padding: 20px;
+    background: #0a0a0a; /* Slightly lighter than pure black */
+    border: 1px solid #d4af37;
+    margin: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: 'Times New Roman', serif;
+}
+
+/* Base style for the dropdown */
+select#animalSelector {
+    appearance: none; /* Removes default browser arrow */
+    background-color: #000;
+    color: #d4af37;
+    border: 1px solid #d4af37;
+    padding: 8px 35px 8px 15px; /* Extra right padding for custom arrow */
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 0; /* Sharp corners for a more 'architectural' look */
+
+    /* Custom Arrow using a Data URI SVG */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: all 0.3s ease;
+}
+
+/* Hover and Focus states */
+select#animalSelector:hover {
+    background-color: #1a1a1a;
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+}
+
+select#animalSelector:focus {
+    outline: none;
+    border-color: #fff;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+}
+
+/* Style the slider to match */
+input[type="range"] {
+    accent-color: #d4af37; /* Modern way to color the slider handle */
+    cursor: pointer;
+}
+
+/* Container Layout */
+.hero-lab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 40px;
+    background: rgba(15, 15, 15, 0.8);
+    border: 1px solid #d4af3733;
+    border-radius: 15px;
+}
+
+/* Typography & Logo */
+.hero-content {
+    text-align: center;
+    margin-bottom: 50px; /* Space between text and cow */
+}
+
+.hero-logo {
+    max-width: 150px;
+    margin: 20px 0;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.2));
+}
+
+.hero-description p {
+    color: #bbb;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    max-width: 700px;
+}
+
+/* Experiment Zone Styles */
+.experiment-zone {
+    width: 100%;
+    background: #000;
+    border: 1px solid #d4af3766;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.pasture-stage {
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+    border-bottom: 2px solid #d4af37;
+    margin-bottom: 25px;
+}
+
+/* Slick Controls */
+.physics-controls {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.control-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.control-item label {
+    font-size: 0.75rem;
+    color: #d4af37;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Custom Select Styling */
+select#animalSelector {
+    background: #000;
+    color: #d4af37;
+    border: 1px solid #d4af37;
+    padding: 5px 15px;
+    font-family: 'Times New Roman', serif;
+    cursor: pointer;
+}
+
+input[type="range"] {
+    accent-color: #d4af37;
+}
+
+.discover-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 35px;
+    border: 1px solid #d4af37; /* Gold border */
+    color: #d4af37;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    background: transparent;
+}
+
+.discover-btn:hover {
+    background: #d4af37;
+    color: #000;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    transform: translateY(-2px);
+}
+
+.discover-btn:active {
+    transform: translateY(0);
+}
+

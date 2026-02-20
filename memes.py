@@ -15,4 +15,9 @@ memes = [
     {"file": "tree.png"},
     {"file": "ohm.png"},
     {"file": "talkingtomyx.png"},
+    {"file": "1.png"},
+    {"file": "2.png"},
+    {"file": "3.png"},
+    {"file": "4.png"},
+    {"file": "5.png"},
 ]

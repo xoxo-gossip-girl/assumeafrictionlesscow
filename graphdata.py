@@ -3,7 +3,7 @@ graph_data = {
         'title': 'Number Theory',
         'color': '#3d1a10',  # Deep Red/Brown (Algebra-esque)
         'posts': [
-            {'id': 1, 'label': 'Primes', 'img': '/static/primes.jpg', 'intro': 'The building blocks of arithmetic.', 'url': '/can-physics-predict-the-future'},
+            {'id': 1, 'label': 'Primes', 'img': '/static/primes.jpg', 'intro': 'Can Physics Predict the Future?', 'url': '/can-physics-predict-the-future'},
             {'id': 2, 'label': 'Modular', 'img': '/static/mod.jpg', 'intro': 'Clock arithmetic and congruences.', 'url': '/modular'},
             {'id': 3, 'label': 'Riemann', 'img': '/static/zeta.jpg', 'intro': 'The most famous unsolved hypothesis.', 'url': '/riemann'}
         ]
@@ -12,7 +12,7 @@ graph_data = {
         'title': 'Space',
         'color': '#0d1b2a',  # Midnight Navy
         'posts': [
-            {'id': 1, 'label': 'Black Holes', 'img': '/static/bh.jpg', 'intro': 'Singularities in the fabric of spacetime.', 'url': '/black-holes'},
+            {'id': 1, 'label': 'Meteorites', 'img': '/static/bh.jpg', 'intro': 'Singularities in the fabric of spacetime.', 'url': '/meteorites'},
             {'id': 2, 'label': 'Nebulae', 'img': '/static/nebula.jpg', 'intro': 'Stellar nurseries of gas and dust.', 'url': '/nebulae'}
         ]
     },
@@ -20,7 +20,7 @@ graph_data = {
         'title': 'Topology',
         'color': '#2d3e50',  # Slate Blue/Grey
         'posts': [
-            {'id': 1, 'label': 'Manifolds', 'img': '/static/man.jpg', 'intro': 'Spaces that look flat up close.', 'url': '/manifolds'},
+            {'id': 1, 'label': 'Hexagons', 'img': '/static/man.jpg', 'intro': 'A Physical and Theoretical dive into the 6 sided shape.', 'url': '/hexagons'},
             {'id': 2, 'label': 'Donuts', 'img': '/static/torus.jpg', 'intro': 'Why coffee cups are just like donuts.', 'url': '/torus'}
         ]
     },
@@ -28,7 +28,7 @@ graph_data = {
         'title': 'History',
         'color': '#4a3728',  # Aged Parchment/Sepia
         'posts': [
-            {'id': 1, 'label': 'Industrial', 'img': '/static/rev.jpg', 'intro': 'The era of steam and steel.', 'url': '/industrial'}
+            {'id': 1, 'label': 'Astrophysics', 'img': '/static/rev.jpg', 'intro': 'A whistle-stop tour of the history of astrophysics', 'url': '/astrophysics-history'}
         ]
     },
     'material-science': {
@@ -64,7 +64,7 @@ graph_data = {
         'title': 'Quantum',
         'color': '#002855',  # Deep Electric Blue
         'posts': [
-            {'id': 1, 'label': 'Entanglement', 'img': '/static/ent.jpg', 'intro': 'Spooky action at a distance.', 'url': '/entanglement'},
+            {'id': 1, 'label': 'The Double Slit Experiment', 'img': '/static/ent.jpg', 'intro': 'The bread and butter of all things quantum.', 'url': '/doubleslit'},
             {'id': 2, 'label': 'Photons', 'img': '/static/light.jpg', 'intro': 'Particles and waves of light.', 'url': '/photons'}
         ]
     }
