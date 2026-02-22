@@ -12,7 +12,7 @@ graph_data = {
         'color': '#0d1b2a',  # Midnight Navy
         'posts': [
             {'id': 1, 'label': 'Meteorites', 'img': '/static/img/meteorites1.png', 'intro': 'How to find meteorites on your own roof!', 'url': '/meteorites'},
-            {'id': 2, 'label': 'Dark Matter', 'img': '/static/img/darkmatter1/png', 'intro': 'One of the greatest mysteries of the universe.', 'url': '/darkmatter'}
+            {'id': 2, 'label': 'Dark Matter', 'img': '/static/img/darkmatter1.png', 'intro': 'One of the greatest mysteries of the universe.', 'url': '/darkmatter'}
         ]
     },
     'topology': {
@@ -20,7 +20,7 @@ graph_data = {
         'color': '#2d3e50',  # Slate Blue/Grey
         'posts': [
             {'id': 1, 'label': 'Fractals', 'img': '/static/img/fractals1.png', 'intro': 'Infinite complexity born from simple repetition.', 'url': '/fractals'},
-            {'id': 2, 'label': 'Origami', 'img': '/static/img/origami1.png', 'intro': 'The Geometry of Folding', 'url': '/torus'}
+            {'id': 2, 'label': 'Origami', 'img': '/static/img/origami1.png', 'intro': 'The Geometry of Folding', 'url': '/origami'}
         ]
     },
     'history': {
@@ -43,7 +43,7 @@ graph_data = {
         'color': '#582f0e',  # Rust/Ochre
         'posts': [
             {'id': 1, 'label': 'Epidemics', 'img': '/static/img/epidemic1.png', 'intro': 'Using maths to study the spread of pathogens!', 'url': '/epidemic'},
-            {'id': 2, 'label': 'Why santa does not exist', 'img': '/static/img/santa1.png','intro': 'Sorry kiddos...', 'url': '/santa'}
+            {'id': 2, 'label': 'Why Santa Does Not Exist', 'img': '/static/img/santa1.png','intro': 'Sorry kiddos...', 'url': '/santa'}
         ]
     },
     'cows': {
