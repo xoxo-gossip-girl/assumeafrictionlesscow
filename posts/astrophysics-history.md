@@ -1,6 +1,6 @@
 # The History of Astrophysics
 **Our understanding of space before technology**
-### _By Angelica Keskes_
+### _By Angus_
 
 ### Distance to the Moon
 
