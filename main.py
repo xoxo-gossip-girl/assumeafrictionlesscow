@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, abort, url_for
+from flask import Flask, render_template, request, redirect, abort, url_for, make_response
 from graphdata import graph_data
 from olympiadproblems import olympiad_problems
 import os
@@ -6,6 +6,7 @@ import markdown
 import firebase_admin
 from firebase_admin import firestore
 from memes import memes
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -20,9 +21,36 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/sitemaps')
-def sitemaps():
-    return render_template('sitemaps.xml')
+@app.route('/sitemap.xml')
+def sitemap():
+    pages = []
+    static_urls = [
+        {'loc': '/', 'priority': '1.0'},
+        {'loc': '/about', 'priority': '0.5'},
+        {'loc': '/posts', 'priority': '0.7'},
+        {'loc': '/memes', 'priority': '0.3'},
+        {'loc': '/olympiad', 'priority': '0.7'},
+    ]
+    for url in static_urls:
+        pages.append(url)
+    for category in graph_data.keys():
+        pages.append({'loc': f'/posts/{category}', 'priority': '0.6'})
+    for cat in graph_data.values():
+        for post in cat['posts']:
+            pages.append({'loc': post['url'], 'priority': '0.8'})
+    for p in olympiad_problems.values():
+        pages.append({'loc': f"/{p['url_slug']}", 'priority': '0.8'})
+    base_url = "https://assumeafrictionlesscowtheblog.web.app"
+    lastmod = datetime.now().strftime("%Y-%m-%d")
+
+    xml_content = render_template('sitemap_template.xml',
+                                  pages=pages,
+                                  base_url=base_url,
+                                  lastmod=lastmod)
+
+    response = make_response(xml_content)
+    response.headers["Content-Type"] = "application/xml"
+    return response
 
 
 @app.route('/posts')
