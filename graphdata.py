@@ -47,10 +47,11 @@ graph_data = {
         ]
     },
     'cows': {
-        'title': 'Cows',
+        'title': 'Biology',
         'color': '#111d13',  # Dark Moss
         'posts': [
-            {'id': 1, 'label': 'Bovines', 'img': '/static/cow1.jpg', 'intro': 'Exploring the biology of cattle.', 'url': '/bovines'}
+            {'id': 1, 'label': 'Climate Tipping Points', 'img': '/static/img/climatetipping.png', 'intro': 'What are climate tipping points, and how likely is it that humans might trigger them?', 'url': '/climatetipping'},
+            {'id': 2, 'label': 'Healthcare', 'img': '/static/img/healthcare.png', 'intro': 'What is the greatest healthcare challenge in the world at the moment, and what steps can we take to solve it?', 'url': '/healthcare'}
         ]
     },
     'recommendations': {

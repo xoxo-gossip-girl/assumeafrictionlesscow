@@ -1,5 +1,5 @@
 # Why is everything a hexagon?
-### _By Angus_
+### _By Mooshroom_
 ### Have you ever wondered why hexagons seem to always appear in nature?
 
 #### Honeycomb

@@ -1,6 +1,6 @@
 # The History of Astrophysics
 **Our understanding of space before technology**
-### _By Angus_
+### _By Mooshroom_
 
 ### Distance to the Moon
 

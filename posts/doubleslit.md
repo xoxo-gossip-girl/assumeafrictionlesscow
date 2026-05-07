@@ -1,5 +1,5 @@
 # Finding the diameter of a hair with quantum physics
-### _By Angus and Maramureş_
+### _By Mooshroom and Maramureş_
 ### An idea - what do you think would happen?
 What would happen if you directed a particle - such as an electron or photon - at two slits?
 ![img_1.png](../static/img/doubleslit2.png)

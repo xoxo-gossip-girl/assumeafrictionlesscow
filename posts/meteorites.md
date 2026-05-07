@@ -1,5 +1,5 @@
 # Meteorites
-### _By Angus_
+### _By Mooshroom_
 ### What is a meteorite?
 A **meteorite** is a rock that survives passing through a planet's atmosphere and lands on the surface.
 
